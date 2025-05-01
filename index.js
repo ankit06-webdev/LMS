@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose');
 const db = require('./db/db');
+require('dotenv').config();
 const storeSubject = require('./db/storeSubjects');
 const storeMaterial = require('./db/storeMaterials');
 const Branch = require('./models/branch.model');
@@ -14,7 +15,7 @@ const app = express()
 app.set('view engine', 'ejs');
 
 app.use(express.static(__dirname + '/public'));
-const port = 3000
+const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
     res.render('index');
