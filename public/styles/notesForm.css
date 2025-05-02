@@ -1,7 +1,143 @@
-.form{
-    padding: 200px 500px;
+/* FORM SECTION */
+.form {
+  padding: 150px 15%;
+  background-color: #f8fafd;
 }
-h1{
-    text-align: center;
-    margin-bottom: 50px;
+
+h1 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 36px;
+  font-weight: 700;
+  color: #0A58CA; /* Theme color */
+}
+
+/* SELECTS & FORM ELEMENTS */
+.form-select,
+.submitBtn {
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.submitBtn {
+  background-color: #0A58CA;
+  color: white;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.submitBtn:hover {
+  background-color: #084298;
+}
+
+/* MATERIALS SECTION */
+.materials-section {
+  margin-top: 60px;
+  padding: 50px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 40px;
+  text-align: center;
+  color: #0A58CA; /* Match theme */
+}
+
+/* GRID SYSTEM */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+
+/* CARD DESIGN */
+.material-card {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(to bottom right, #ffffff, #f0f4ff);
+  border: 1px solid #e0e0e0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.material-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  padding: 25px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0A58CA; /* Theme accent */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-text {
+  font-size: 15px;
+  color: #555;
+  margin: 15px 0 20px;
+}
+
+/* BUTTON DESIGN */
+.material-card .btn {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 8px;
+  color: #0A58CA;
+  border-color: #0A58CA;
+  transition: 0.3s ease;
+}
+
+.material-card .btn:hover {
+  background-color: #0A58CA;
+  color: #fff;
+}
+
+/* BADGES */
+.badge {
+  background-color: #0A58CA;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.4em 0.6em;
+  border-radius: 0.5rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .form {
+    padding: 120px  40px;
+  }
+}
+
+@media (max-width: 576px) {
+  .form {
+    padding: 100px  20px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .card-title {
+    font-size: 18px;
+  }
+
+  .card-text {
+    font-size: 14px;
+  }
 }

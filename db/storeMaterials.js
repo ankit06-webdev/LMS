@@ -26,8 +26,24 @@ connectDB().then(async () => {
     // Materials to insert
     const materials = [
       {
-        title: "DSA Notes PDF",
+        title: "DSA Notes",
         type: "notes",
+        file_url: "https://example.com/dsa-notes.pdf",
+        subject: "Data Structures",
+        branch: "Computer Science and Engineering",
+        semester: 3
+      },
+      {
+        title: "DSA PYQ 2022",
+        type: "pyq",
+        file_url: "https://example.com/dsa-notes.pdf",
+        subject: "Data Structures",
+        branch: "Computer Science and Engineering",
+        semester: 3
+      },
+      {
+        title: "DSA book",
+        type: "book",
         file_url: "https://example.com/dsa-notes.pdf",
         subject: "Data Structures",
         branch: "Computer Science and Engineering",

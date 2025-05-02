@@ -18,30 +18,68 @@
                   <option value="Mechanical Engineering">Mechanical Engineering</option>
                   <option value="Metallurgical Engineering">Metallurgical Engineering</option>
                 </select>
-              
+
                 <!-- Semester Selection -->
                 <select class="form-select form-select-lg mb-3" name="semester">
                   <option disabled selected>Select Semester</option>
-                  <% for (let i = 1; i <= 6; i++) { %>
-                    <option value="<%= i %>"><%= i %></option>
-                  <% } %>
+                  <% for (let i=1; i <=6; i++) { %>
+                    <option value="<%= i %>">
+                      <%= i %>
+                    </option>
+                    <% } %>
                 </select>
-              
+
                 <!-- Subject Selection -->
                 <select class="form-select form-select-lg mb-3" name="subject">
                   <option disabled selected>Select Subject</option>
-                  <% if (typeof subjects !== 'undefined' && subjects.length > 0) { %>
-                    <% subjects.forEach(subject => { %>
-                      <option value="<%= subject.subject_name %>"><%= subject.subject_name %></option>
-                    <% }) %>
-                  <% } else { %>
-                    <option disabled>No subjects available</option>
-                  <% } %>
+                  <% if (typeof subjects !=='undefined' && subjects.length> 0) { %>
+                    <% subjects.forEach(subject=> { %>
+                      <option value="<%= subject.subject_name %>">
+                        <%= subject.subject_name %>
+                      </option>
+                      <% }) %>
+                        <% } else { %>
+                          <option disabled>No subjects available</option>
+                          <% } %>
                 </select>
-              
+
                 <button type="submit" class="btn btn-primary submitBtn">GENERATE</button>
               </form>
+
+              <!-- Stylish Materials Section -->
+              <% if (typeof materials !== 'undefined' && materials.length > 0) { %>
+                <div class="materials-section mt-5">
+                  <h3 class="section-title">📚 Available Materials</h3>
+                  
+                  <!-- Subject Name -->
+                  <div class="text-center mb-4">
+                    <h4 class="text-primary fw-bold">
+                      Subject: <%= selectedSubject || "Unknown Subject" %>
+                    </h4>
+                  </div>
               
+                  <div class="row">
+                    <% materials.forEach(material => { %>
+                      <div class="col-md-4">
+                        <div class="material-card card shadow-lg mb-4">
+                          <div class="card-body">
+                            <h5 class="card-title d-flex justify-content-between">
+                              <%= material.title %>
+                              <span class="badge bg-info text-dark"><%= material.file_url.split('.').pop().toUpperCase() %></span>
+                            </h5>
+                            <p class="card-text"><%= material.description || "No description provided." %></p>
+                            <a href="<%= material.file_url %>" class="btn btn-outline-success w-100" target="_blank">
+                              <i class="bi bi-download"></i> Download
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    <% }) %>
+                  </div>
+                </div>
+              <% } %>
+              
+
             </div>
           </div>
         </div>
@@ -49,45 +87,45 @@
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
         crossorigin="anonymous"></script>
-        <script>
-          const branchSelect = document.querySelector('select[name="branch"]');
-          const semesterSelect = document.querySelector('select[name="semester"]');
-          const subjectSelect = document.querySelector('select[name="subject"]');
-        
-          async function fetchSubjects() {
-            const branch = branchSelect.value;
-            const semester = semesterSelect.value;
-        
-            if (branch && semester) {
-              try {
-                const response = await fetch(`/get-subjects?branch=${encodeURIComponent(branch)}&semester=${semester}`);
-                const subjects = await response.json();
-        
-                subjectSelect.innerHTML = '<option disabled selected>Select Subject</option>';
-        
-                if (subjects.length > 0) {
-                  subjects.forEach(subject => {
-                    const option = document.createElement('option');
-                    option.value = subject.subject_name;
-                    option.textContent = subject.subject_name;
-                    subjectSelect.appendChild(option);
-                  });
-                } else {
+      <script>
+        const branchSelect = document.querySelector('select[name="branch"]');
+        const semesterSelect = document.querySelector('select[name="semester"]');
+        const subjectSelect = document.querySelector('select[name="subject"]');
+
+        async function fetchSubjects() {
+          const branch = branchSelect.value;
+          const semester = semesterSelect.value;
+
+          if (branch && semester) {
+            try {
+              const response = await fetch(`/get-subjects?branch=${encodeURIComponent(branch)}&semester=${semester}`);
+              const subjects = await response.json();
+
+              subjectSelect.innerHTML = '<option disabled selected>Select Subject</option>';
+
+              if (subjects.length > 0) {
+                subjects.forEach(subject => {
                   const option = document.createElement('option');
-                  option.disabled = true;
-                  option.textContent = 'No subjects available';
+                  option.value = subject.subject_name;
+                  option.textContent = subject.subject_name;
                   subjectSelect.appendChild(option);
-                }
-              } catch (error) {
-                console.error('Error fetching subjects:', error);
+                });
+              } else {
+                const option = document.createElement('option');
+                option.disabled = true;
+                option.textContent = 'No subjects available';
+                subjectSelect.appendChild(option);
               }
+            } catch (error) {
+              console.error('Error fetching subjects:', error);
             }
           }
-        
-          branchSelect.addEventListener('change', fetchSubjects);
-          semesterSelect.addEventListener('change', fetchSubjects);
-        </script>
-        
+        }
+
+        branchSelect.addEventListener('change', fetchSubjects);
+        semesterSelect.addEventListener('change', fetchSubjects);
+      </script>
+
   </body>
 
 </html>

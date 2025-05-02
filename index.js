@@ -7,7 +7,9 @@ const storeMaterial = require('./db/storeMaterials');
 const Branch = require('./models/branch.model');
 const Semester = require('./models/semester.model');
 const Subject = require('./models/subject.model');
+const Material = require('./models/material.model');
 const connectDB = require('./conn');
+
 connectDB();
 
 const app = express()
@@ -19,15 +21,19 @@ const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
     res.render('index');
-
+    // storeMaterial.storeMaterial();
 })
+app.get('/signup', (req, res) => {
+    res.send('<h1>signUp</h1>');
+})
+
 app.get('/notes', async (req, res) => {
     const branchName = req.query.branch;
     const semesterNumber = parseInt(req.query.semester);
-console.log(branchName); 
-console.log(semesterNumber); 
+    const subjectName = req.query.subject;
+
     if (!branchName || isNaN(semesterNumber)) {
-        return res.render('notesForm', { subjects: [] }); // or handle error
+        return res.render('notesForm', { subjects: [], materials: [] });
     }
 
     try {
@@ -35,7 +41,7 @@ console.log(semesterNumber);
         const semester = await Semester.findOne({ semester_number: semesterNumber });
 
         if (!branch || !semester) {
-            return res.render('notesForm', { subjects: [] });
+            return res.render('notesForm', { subjects: [], materials: [] });
         }
 
         const subjects = await Subject.find({
@@ -43,12 +49,22 @@ console.log(semesterNumber);
             semester_id: semester._id
         });
 
-        res.render('notesForm', { subjects });
+        let materials = [];
+
+        if (subjectName) {
+            const subject = await Subject.findOne({ subject_name: subjectName });
+            if (subject) {
+                materials = await Material.find({ subject_id: subject._id });
+            }
+        }
+
+        res.render('notesForm', { subjects, materials, selectedSubject: req.query.subject });
     } catch (err) {
         console.error(err);
         res.status(500).send("Server error");
     }
 });
+
 
 app.get('/get-subjects', async (req, res) => {
     const branchName = req.query.branch;
@@ -83,5 +99,5 @@ app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
     // db.db();
     // storeSubject.storeSubject();
-    // storeMaterial.storeMaterial();
+    
 })
