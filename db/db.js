@@ -19,7 +19,6 @@ connectDB().then(async () => {
   })
   .catch(err => console.error("Insertion error:", err));
 
-
 // Semester
 
 const Semester = require('../models/semester.model'); // Adjust path

@@ -21,7 +21,6 @@ const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
     res.render('index');
-    // storeMaterial.storeMaterial();
 })
 app.get('/signup', (req, res) => {
     res.send('<h1>signUp</h1>');
@@ -33,7 +32,7 @@ app.get('/notes', async (req, res) => {
     const subjectName = req.query.subject;
 
     if (!branchName || isNaN(semesterNumber)) {
-        return res.render('notesForm', { subjects: [], materials: [] });
+        return res.render('notesForm', { subjects: [], materials: [], selectedSubject: null });
     }
 
     try {
@@ -41,7 +40,7 @@ app.get('/notes', async (req, res) => {
         const semester = await Semester.findOne({ semester_number: semesterNumber });
 
         if (!branch || !semester) {
-            return res.render('notesForm', { subjects: [], materials: [] });
+            return res.render('notesForm', { subjects: [], materials: [], selectedSubject: null });
         }
 
         const subjects = await Subject.find({
@@ -52,18 +51,24 @@ app.get('/notes', async (req, res) => {
         let materials = [];
 
         if (subjectName) {
-            const subject = await Subject.findOne({ subject_name: subjectName });
+            const subject = await Subject.findOne({
+                subject_name: subjectName,
+                branch_id: branch._id,
+                semester_id: semester._id
+            });
+
             if (subject) {
                 materials = await Material.find({ subject_id: subject._id });
             }
         }
 
-        res.render('notesForm', { subjects, materials, selectedSubject: req.query.subject });
+        res.render('notesForm', { subjects, materials, selectedSubject: subjectName });
     } catch (err) {
         console.error(err);
         res.status(500).send("Server error");
     }
 });
+
 
 
 app.get('/get-subjects', async (req, res) => {
@@ -99,5 +104,6 @@ app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
     // db.db();
     // storeSubject.storeSubject();
+    // storeMaterial.storeMaterial();
     
 })

@@ -21,7 +21,7 @@ function storeSubject() {
 
         // Define subjects with readable names
         const subjects = [
-            { name: "Data Structures", code: "CS201", branch: "Computer Science and Engineering", sem: 1 },
+            { name: "Data Structures", code: "CS201", branch: "Computer Science and Engineering", sem: 3 },
             { name: "Operating Systems", code: "CS302", branch: "Computer Science and Engineering", sem: 4 },
             { name: "Digital Circuits", code: "EC204", branch: "Electrical Engineering", sem: 3 }
         ];

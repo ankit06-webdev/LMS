@@ -1,19 +1,22 @@
-function storeMaterial(){
-    const connectDB = require('../conn');
-const mongoose = require('mongoose');
-const Material = require('../models/material.model');
-const Subject = require('../models/subject.model');
-const Branch = require('../models/branch.model');
-const Semester = require('../models/semester.model');
+function storeMaterial() {
+  const connectDB = require('../conn');
+  const mongoose = require('mongoose');
+  const Material = require('../models/material.model');
+  const Subject = require('../models/subject.model');
+  const Branch = require('../models/branch.model');
+  const Semester = require('../models/semester.model');
 
-connectDB().then(async () => {
+  connectDB().then(async () => {
 
     // Helper to get subject, branch, and semester IDs
     const getRefs = async (subjectName, branchName, semesterNumber) => {
+
       const branch = await Branch.findOne({ branch_name: branchName });
       const semester = await Semester.findOne({ semester_number: semesterNumber });
       const subject = await Subject.findOne({ subject_name: subjectName });
-
+      if (!subject) {
+        console.error(`Subject not found: ${subjectName}`);
+      }
       if (!branch || !semester || !subject) throw new Error("One or more references not found");
 
       return {
@@ -84,7 +87,7 @@ connectDB().then(async () => {
     console.log("Materials inserted successfully.");
     process.exit();
   })
-  .catch(err => console.error("Material insert error:", err));
+    .catch(err => console.error("Material insert error:", err));
 }
 
-module.exports = {storeMaterial};
+module.exports = { storeMaterial };
