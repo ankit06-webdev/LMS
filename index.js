@@ -8,11 +8,15 @@ const Branch = require('./models/branch.model');
 const Semester = require('./models/semester.model');
 const Subject = require('./models/subject.model');
 const Material = require('./models/material.model');
-const connectDB = require('./conn');
 
+const bodyParser = require('body-parser');
+const adminRoutes = require('./routes/adminRegister'); // Import your router
+const app = express()
+const connectDB = require('./conn');
+app.use(bodyParser.json());
 connectDB();
 
-const app = express()
+
 
 app.set('view engine', 'ejs');
 
@@ -23,8 +27,10 @@ app.get('/', (req, res) => {
     res.render('index');
 })
 app.get('/signup', (req, res) => {
-    res.send('<h1>signUp</h1>');
+    res.render('signup');
 })
+// Use the router for the '/auth' base path
+app.use('/auth', adminRoutes); // Now, routes defined in admin.js will be prefixed with '/auth'
 
 app.get('/notes', async (req, res) => {
     const branchName = req.query.branch;
@@ -105,5 +111,5 @@ app.listen(port, () => {
     // db.db();
     // storeSubject.storeSubject();
     // storeMaterial.storeMaterial();
-    
+
 })
